@@ -17,6 +17,7 @@ classifiers = [
     "Programming Language :: Python :: 3.13",
     "Topic :: Software Development :: Libraries :: Python Modules",
 ]
+license = {text = "All Rights Reserved"}
 
 [project.urls]
 Homepage = "https://{{cookiecutter.author_github_handle}}.github.io/{{cookiecutter.project_name}}/"
@@ -38,72 +39,118 @@ dev = [
 ]
 
 [build-system]
-requires = ["setuptools >= 61.0"]
-build-backend = "setuptools.build_meta"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.setuptools]
 py-modules = ["{{cookiecutter.project_slug}}"]
-
-[tool.mypy]
-files = ["{{cookiecutter.project_slug}}"]
-disallow_untyped_defs = true
-disallow_any_unimported = true
-no_implicit_optional = true
-check_untyped_defs = true
-warn_return_any = true
-warn_unused_ignores = true
-show_error_codes = true
-
-[tool.pytest.ini_options]
-testpaths = ["tests"]
 
 [tool.ruff]
 target-version = "py39"
 line-length = 120
 fix = true
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    ".history",
+    "**/gignore*/**",
+    "tests"
+]
 
 [tool.ruff.lint]
 select = [
-    # flake8-2020
-    "YTT",
-    # flake8-bandit
-    "S",
-    # flake8-bugbear
-    "B",
-    # flake8-builtins
-    "A",
-    # flake8-comprehensions
-    "C4",
-    # flake8-debugger
-    "T10",
-    # flake8-simplify
-    "SIM",
-    # isort
-    "I",
-    # mccabe
-    "C90",
-    # pycodestyle
-    "E", "W",
-    # pyflakes
-    "F",
-    # pygrep-hooks
-    "PGH",
-    # pyupgrade
-    "UP",
-    # ruff
-    "RUF",
-    # tryceratops
-    "TRY",
+    "F",     # Pyflakes
+    "E", "W", # Pycodestyle
+    "C90",   # McCabe complexity
+    "I",     # isort
+    "N",     # pep8-naming
+    "UP",    # pyupgrade
+    "YTT",   # flake8-2020
+    "ASYNC", # flake8-async
+    "S",     # flake8-bandit
+    "B",     # flake8-bugbear
+    "A",     # flake8-builtins
+    "C4",    # flake8-comprehensions
+    "DTZ",   # flake8-datetimez
+    "FA",    # flake8-future-annotations
+    "PIE",   # flake8-pie
+    "RET",   # flake8-return
+    "SLF",   # flake8-self
+    "SIM",   # flake8-simplify
+    "ARG",   # flake8-unused-arguments
+    "PTH",   # flake8-use-pathlib
+    "PL",    # Pylint
+    "FAST",  # flake8-faster
+    "RUF",   # Ruff-specific
+    "TID",   # flake8-tidy-imports
+    "T10",   # debugger checks
+    "PGH",   # pygrep-hooks
+    "TRY"    # exception handling
 ]
 ignore = [
-    # LineTooLong
-    "E501",
-    # DoNotAssignLambda
-    "E731",
+    "ASYNC109",  # Prevent async/await in __aenter__
+    "ARG001",    # Unused function argument
+    "S101",      # Use of assert
+    "PLR0917",   # Too many positional arguments
+    "PLR0913",   # Too many arguments to function call
+    "E501",      # Line too long (handled by formatter)
+    "E731"       # Lambda assignments
 ]
+preview = true
+fixable = ["ALL"]
+unfixable = []
+extend-safe-fixes = ["ANN201"]
 
-[tool.ruff.lint.per-file-ignores]
-"tests/*" = ["S101"]
+[tool.ruff.lint.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+[tool.ruff.lint.isort]
+known-first-party = ["{{cookiecutter.project_slug}}"]
+combine-as-imports = true
+
+[tool.pyright]
+include = ["."]
+exclude = [
+    "**/__pycache__",
+    ".venv",
+    ".history",
+    ".git",
+    ".ruff_cache",
+    ".pytype",
+    ".mypy_cache",
+    "**/gignore*/**",
+    "tests"
+]
+venvPath = "."
+venv = ".venv"
+pythonVersion = "3.12"
+pythonPlatform = "Darwin"
+
+typeCheckingMode = "standard"
+
+analyzeUnannotatedFunctions = true
+deprecateTypingAliases = true
+strictSetInference = true
+strictDictionaryInference = true
+strictListInference = true
 
 [tool.ruff.format]
 preview = true
@@ -116,3 +163,7 @@ skip_empty = true
 branch = true
 source = ["{{cookiecutter.project_slug}}"]
 {% endif %}
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
